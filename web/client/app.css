@@ -1,0 +1,29 @@
+body {
+	padding: 0;
+	margin: 0;
+	background-color: black;
+	color: white;
+	overflow: hidden;
+}
+
+.image {
+	width: 100%;
+}
+
+h1 {
+	z-index: 3;
+	position: absolute;
+	line-height: 120%;
+	top: 0;
+	width: 95%;
+	text-shadow: 4px 4px 4px black;
+}
+
+h2 {
+	z-index: 3;
+	width: 95%;
+	position: absolute;
+	line-height: 120%;
+	text-shadow: 4px 4px 12px black;
+	bottom: 0;
+}

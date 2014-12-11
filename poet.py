@@ -9,9 +9,9 @@
  ==================
 
  Requires:
- (1) NLTK library 
+ (1) NLTK library
      (install via "pip install nltk")
- (2) Gutenberg and CMUDict NLTK corpora 
+ (2) Gutenberg and CMUDict NLTK corpora
      (install via "import nltk" and then "nltk.download()" in Python shell)
 
  Usage:
@@ -24,10 +24,17 @@ from nltk.corpus import cmudict, gutenberg
 DICTIONARY = cmudict.dict()
 REPOSITORY = {}
 TEXTS = [
-            'austen-emma.txt', 
-            'austen-persuasion.txt', 
-            'austen-sense.txt', 
-            'carroll-alice.txt', 
+            'bible-kjv.txt',
+            'blake-poems.txt',
+            'austen-sense.txt',
+            'shakespeare-caesar.txt',
+            'melville-moby_dick.txt',
+            'whitman-leaves.txt',
+            'burgess-busterbrown.txt',
+            'milton-paradise.txt',
+            'bryant-stories.txt',
+            'chesterton-thursday.txt',
+
             # Feel free to add more texts here. For a full list of texts,
             # open the python shell, and run:
             #
@@ -68,7 +75,12 @@ def main(num_couplets, num_syllables, rhyme_depth):
 def addSentence(sentence, rhyme_depth):
   """Analyze an array of words and add it to the sentence REPOSITORY."""
   if len(sentence) > 20: return
-  recognized_words = [ w.lower() for w in sentence if w.lower() in DICTIONARY ]
+  def _clean(word):
+    return re.sub(r'\d+', '', word).lower()
+  def _is_word(token):
+    return _clean(token) in DICTIONARY
+
+  recognized_words = [ _clean(w) for w in sentence if _is_word(w) ]
   if len(recognized_words) < 3: return
 
   # pronounced = phonetic pronunciation and syllable count from CMUDict
@@ -79,7 +91,7 @@ def addSentence(sentence, rhyme_depth):
   syllables = [ len([ y for y in x if y[-1].isdigit() ]) for x in pronounced ]
   num_syllables = sum(syllables)
 
-  # The rhyme ending is the last n phonemes from the pronunciation of the 
+  # The rhyme ending is the last n phonemes from the pronunciation of the
   # last word. It's not perfect, but it works well enough.
   rhyme_ending = tuple(pronounced[-1][-rhyme_depth:])
 
@@ -113,7 +125,7 @@ def pretty(words):
   words = words.strip()                                 # leading and trailing whitespace
   return words
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
   arg_num_couplets = 5
   arg_num_syllables = 10
   arg_rhyme_depth = 2
