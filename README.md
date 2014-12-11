@@ -3,7 +3,7 @@ Permutation Poetry
 
 Permutation Poetry is a small Python program that uses the vast NLTK library to
 generate original poetry from permutations of classic prose. It reads classic
-texts like Jane Austen's "Emma" and Milton's "Paradise" and finds sentences
+texts like Jane Austen's "Emma" and Milton's "Paradise Lost" and finds sentences
 with rhyming endings and approximately the same number of syllables. It then
 picks pairs of such sentences and outputs a set of couplets that sometimes
 make sense.
