@@ -6,8 +6,8 @@ import re
 from urllib import urlencode
 from subprocess import check_output
 
-POET_COUPLETS = 200
-POET_SYLLABLES_PER_LINE = 5
+POET_COUPLETS = 4000
+POET_SYLLABLES_PER_LINE = 7
 POET_RHYMING = 2
 
 API_KEY = '8f16841b2da951203cb2a11c87726501'
@@ -21,6 +21,9 @@ def search(query):
         'method': 'flickr.photos.search',
         'text': query,
         'format': 'json',
+        'content_type': 1,
+        'media': 'photos',
+        'per_page': 10,
         'sort': 'interestingness-desc',
         'nojsoncallback': 1
     })
@@ -28,7 +31,7 @@ def search(query):
   if r.json():
     results = r.json()['photos']['photo']
     if len(results):
-      chosen = random.choice(results[:5])
+      chosen = random.choice(results[:10])
       return chosen
   return None
 
@@ -37,19 +40,20 @@ def main():
       POET_COUPLETS, POET_SYLLABLES_PER_LINE, POET_RHYMING), shell=True)
   lines = poetry.split('\n')
 
-  output = json.loads(open('poetry.json').read()) or []
+  output = json.loads(open('poetry.json').read()) or {}
 
   for i in range(0, len(lines)-1, 2):
     couplet = clean(lines[i]), clean(lines[i+1])
     print 'COUPLET: ' + ' | '.join(couplet)
     result = search(couplet[0])
     if result:
-      print 'RESULT', result
-      output.append({
-          'sentences': couplet,
-          'image': result,
-        })
-      open('poetry.json', 'w+').write(json.dumps(output))
+      imgId = result['id']
+      output[imgId] = {
+        'sentences': couplet,
+        'image': result
+      }
+      print 'RESULT', imgId, '->', result
+      open('poetry.json', 'w+').write(json.dumps(output, indent=2))
     else:
       print 'NO RESULT'
 

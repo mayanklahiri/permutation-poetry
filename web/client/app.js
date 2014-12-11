@@ -2,10 +2,9 @@ $(document).ready(function() {
 
 	var COLORS = [
 		'#38f', '#92b', '#aa8', '#d9b', '#38a', '#77c', '#fed',
-		'#deadbf', '#31994', '#90210',
+		'#deadbf', '#31994', '#90210', '#8aa', '#82c', '#8fa',
+		'#cac', '#c0c0c0'
 	];
-
-	var SLIDESHOW_PAUSE = 10 * 1000;
 
 	var FONTS = [
 		['Chicle'],
@@ -15,16 +14,19 @@ $(document).ready(function() {
 		['Pacifico'],
 		['Bangers'],
 		['Boogaloo'],
-		['PassionOne']
+		['Passion One'],
+		['Bubblegum Sans'],
+		['Fredoka One'],
+		['Special Elite'],
+		['Rock Salt'],
+		['Lemon']
 	];
 
-	var slideshow = true;
-	var State = {
-		'index': 0
-	};
+	var State = {};
+	var poetryAsList;
 
 	$.getJSON('poetry.json', function(data) {
-		if (!data || !data.length) {
+		if (!data) {
 			console.error('No poetry served.');
 			return;
 		}
@@ -35,33 +37,35 @@ $(document).ready(function() {
 				var state = JSON.parse(decodeURIComponent(currentState));
 				if (typeof state == 'object') {
 					State = state;
-					slideshow = false;
 				}
 			}
-		} catch(e) {throw e}
-
-		var poetry = data;
-		render_();
-		if (slideshow) setTimeout(update_, SLIDESHOW_PAUSE);
-
-		$('body').click(function() {
-			if (!slideshow) {
-				slideshow = true;
-				update_();
-			} else {
-				slideshow = false;
-			}
-		});
-
-		function update_() {
-			for (var key in State) {
-				State[key] = null;
-			}
-			State['index'] = Math.floor(Math.random() * poetry.length);
-			render_();
+		} catch(e) {
+			console.warn('Malformed URL, it was ignored.');
 		}
 
+		var poetry = data;
+		poetryAsList = [];
+		for (var key in poetry) {
+			poetryAsList.push(poetry[key]);
+		}
+		render_();
+
+		$('.intro').click(function() {
+			$('.intro').fadeOut('slow');
+			return false;
+		})
+
+		$('body').click(function() {
+			$('#imageContainer').hide();
+			$('#loading').show();
+			update_();
+		});
+
 		function render_() {
+			if (!State['index']) {
+				State['index'] = choice_(poetryAsList)['image']['id'];
+			}
+
 			var image = poetry[State['index']]['image'];
 			var url = makeURL_(image);
 			var sentences = poetry[State['index']]['sentences'];
@@ -71,7 +75,7 @@ $(document).ready(function() {
 				$('#image').attr('src', url);
 				var font = State['font'] || getFont_();
 				var color = State['color'] || getColor_();
-				var size = State['size'] || Math.floor(Math.random() * 4) + 4;
+				var size = State['size'] || Math.floor(Math.random() * 4) + 3;
 				var align = State['align'] || choice_(['left', 'center', 'right']);
 				var padding = State['padding'] || (Math.random() + 0.5);
 				var doit = function(id, text) {
@@ -95,9 +99,19 @@ $(document).ready(function() {
 						"Permutation Poetry",
 						"?id=" + encodeURIComponent(JSON.stringify(State)));
 
-				if (slideshow) setTimeout(update_, SLIDESHOW_PAUSE);
-
+				$('#imageContainer').fadeIn('fast');
+				$('#loading').hide();
+				document.title = 'Permutation Poetry: ' + sentences[0];
 			}
+		}
+
+
+		function update_() {
+			for (var key in State) {
+				State[key] = null;
+			}
+			State['index'] = Math.floor(Math.random() * poetry.length);
+			render_();
 		}
 
 		function choice_(a) {

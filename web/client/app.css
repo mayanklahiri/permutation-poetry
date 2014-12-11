@@ -22,8 +22,39 @@ h1 {
 h2 {
 	z-index: 3;
 	width: 95%;
+	font-weight: normal;
 	position: absolute;
 	line-height: 120%;
 	text-shadow: 4px 4px 12px black;
 	bottom: 0;
+}
+
+.intro {
+	position: absolute;
+	text-align: center;
+	top: 20px;
+	left: 20px;
+	font-size: 24px;
+	padding: 1em;
+	font-family: 'Arial', sans-serif;
+	font-weight: 400;
+	opacity: 0.8;
+	border-radius: 5px;
+	border: solid 4px #222;
+	background-color: #333;
+	color: #eee;
+	z-index: 10;
+}
+
+.intro h3 {
+	z-index: 11;
+	font-size: 38px;
+	font-family: 'Passion One', sans-serif;
+	font-weight: normal;
+}
+
+.intro .small {
+	font-style: italic;
+	font-size: 14px;
+	font-weight: normal;
 }
