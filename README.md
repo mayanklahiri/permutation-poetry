@@ -80,3 +80,8 @@ Usage
        * number of couplets: 5
        * syllables per line: 10
        * rhyming threshold:  2
+
+Demo
+----
+
+[Paired with Flickr image search and Google web fonts](http://mayanklahiri.github.io/permutation-poetry)
