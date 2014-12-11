@@ -11,7 +11,7 @@ make sense.
 Examples
 --------
 
-A single couplet with 6 syllables per line and a rhyming depth of 3 phonemes on 
+A single couplet with 6 syllables per line and a rhyming depth of 3 phonemes on
 the last word:
 
     It was as follows
@@ -39,7 +39,7 @@ And now 12 syllables per line -- so close to making sense!
     we want only two more to be just the right number.
 
 And now getting ambitious with 16 syllables per line:
-    
+
     You are speaking of letters of business; mine are letters of friendship,
     you are always labouring and toiling, exposed to every risk and hardship.
 
@@ -57,10 +57,10 @@ the CMU Pronunciation Dictionary and the Project Gutenberg corpus.
     import nltk
     nltk.download()
 
-That should pop up the NLTK Downloader window. Click on the "Corpora" section, 
+That should pop up the NLTK Downloader window. Click on the "Corpora" section,
 select "cmudict" and "gutenberg" and click "Download". That should be all.
 
-To test if everything works, see which texts are available to NLTK by running 
+To test if everything works, see which texts are available to NLTK by running
 the following commands in the Python shell:
 
     from nltk.corpus import gutenberg
@@ -68,10 +68,15 @@ the following commands in the Python shell:
 
 Usage
 -----
+```
+    ./poet.py [number of couplets] [number of syllables per line] [rhyming threshold]
 
-There is only a single script: poet.py. It take three *optional* parameters, 
-all numbers: the number of couplets to generate, the number of syllables
-per line (give or take a syllable), and the number of trailing phonemes to
-consider in the last word to determine if two words rhyme. The defaults
-for these parameters are 5 couplets of 10 syllables per lines, and a rhyming
-depth of 2 phonemes.
+       number of couplets:  Number of sentence pairs to generate
+       syllables per line:  Syllable length of extracted sentences
+       rhyming threshold:   Constrain sentence pairs by # of shared trailing phonemes
+```
+    Defaults:
+
+       * number of couplets: 5
+       * syllables per line: 10
+       * rhyming threshold:  2
